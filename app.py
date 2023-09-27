@@ -7,8 +7,9 @@ import re
 
 
 # Obtain the API key from the environment variables
-GOOGLEMAPS_API_KEY = st.secrets["GOOGLEMAPS_API_KEY"]
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+GOOGLEMAPS_API_KEY = st.secrets["general"]["GOOGLEMAPS_API_KEY"]
+OPENAI_API_KEY = st.secrets["general"]["OPENAI_API_KEY"]
+
 
 
 # Initialize the Google Maps client
