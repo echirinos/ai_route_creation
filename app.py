@@ -2,8 +2,8 @@ import os
 import html
 import streamlit as st
 import googlemaps
-import openai
 import re
+import openai
 
 
 def check_password():
@@ -65,13 +65,15 @@ if check_password():
 
     if st.button("Plan route"):
         # Generate a response from ChatGPT
-        response = openai.ChatCompletion.create(
+        response = openai.Completion.create(
             model="text-davinci-003",
-            messages=[
-                {"role": "system", "content": "ZRW Route Creation"},
-                {"role": "user", "content": conversation},
-            ],
+            prompt=conversation,
+            temperature=0.5,
+            max_tokens=100,
         )
+
+        # Extract the text from the response
+        generated_text = response['choices'][0]['text']
 
         # Extract the addresses from the user's input
         addresses = re.findall(r"\d{1,5} .+, .+, .+ \d{5}", conversation)
