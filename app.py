@@ -3,7 +3,9 @@ import html
 import streamlit as st
 import googlemaps
 import re
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def check_password():
@@ -38,7 +40,6 @@ if check_password():
 
     # Initialize the Google Maps client
     gmaps = googlemaps.Client(key=GOOGLEMAPS_API_KEY)
-    openai.api_key = OPENAI_API_KEY
 
     sample_prompt = """If I am leaving from 7709 W 20th Ave, Hialeah, FL 33014. Make me a fuel efficient route to visit all these addresses. They don't have to be in that order. Just go based off distance and whatever is nearby.
 
@@ -65,15 +66,13 @@ if check_password():
 
     if st.button("Plan route"):
         # Generate a response from ChatGPT
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=conversation,
-            temperature=0.5,
-            max_tokens=100,
-        )
+        response = client.completions.create(model="text-davinci-003",
+        prompt=conversation,
+        temperature=0.5,
+        max_tokens=100)
 
         # Extract the text from the response
-        generated_text = response['choices'][0]['text']
+        generated_text = response["choices"][0]["text"]
 
         # Extract the addresses from the user's input
         addresses = re.findall(r"\d{1,5} .+, .+, .+ \d{5}", conversation)
