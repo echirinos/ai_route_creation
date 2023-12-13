@@ -5,8 +5,10 @@ import googlemaps
 import openai
 import re
 
+
 def check_password():
     """Returns `True` if the user had the correct password."""
+
     def password_entered():
         if st.session_state["password"] == st.secrets["general"]["password"]:
             st.session_state["password_correct"] = True
@@ -28,12 +30,11 @@ def check_password():
     else:
         return True
 
+
 if check_password():
     # Obtain the API key from the environment variables
     GOOGLEMAPS_API_KEY = st.secrets["general"]["GOOGLEMAPS_API_KEY"]
     OPENAI_API_KEY = st.secrets["general"]["OPENAI_API_KEY"]
-
-
 
     # Initialize the Google Maps client
     gmaps = googlemaps.Client(key=GOOGLEMAPS_API_KEY)
@@ -65,7 +66,7 @@ if check_password():
     if st.button("Plan route"):
         # Generate a response from ChatGPT
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            model="text-davinci-003",
             prompt=conversation,
             temperature=0.5,
             max_tokens=100,
