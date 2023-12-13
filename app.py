@@ -65,11 +65,12 @@ if check_password():
 
     if st.button("Plan route"):
         # Generate a response from ChatGPT
-        response = openai.Completion.create(
+        response = openai.ChatCompletion.create(
             model="text-davinci-003",
-            prompt=conversation,
-            temperature=0.5,
-            max_tokens=100,
+            messages=[
+                {"role": "system", "content": "ZRW Route Creation"},
+                {"role": "user", "content": conversation},
+            ],
         )
 
         # Extract the addresses from the user's input
