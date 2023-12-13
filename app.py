@@ -5,8 +5,6 @@ import googlemaps
 import re
 from openai import OpenAI
 
-client = OpenAI(api_key=OPENAI_API_KEY)
-
 
 def check_password():
     """Returns `True` if the user had the correct password."""
@@ -38,7 +36,9 @@ if check_password():
     GOOGLEMAPS_API_KEY = st.secrets["general"]["GOOGLEMAPS_API_KEY"]
     OPENAI_API_KEY = st.secrets["general"]["OPENAI_API_KEY"]
 
-    # Initialize the Google Maps client
+    # Initialize the Google Maps client and OpenAI
+    client = OpenAI(api_key=OPENAI_API_KEY)
+
     gmaps = googlemaps.Client(key=GOOGLEMAPS_API_KEY)
 
     sample_prompt = """If I am leaving from 7709 W 20th Ave, Hialeah, FL 33014. Make me a fuel efficient route to visit all these addresses. They don't have to be in that order. Just go based off distance and whatever is nearby.
@@ -66,10 +66,12 @@ if check_password():
 
     if st.button("Plan route"):
         # Generate a response from ChatGPT
-        response = client.completions.create(model="text-davinci-003",
-        prompt=conversation,
-        temperature=0.5,
-        max_tokens=100)
+        response = client.completions.create(
+            model="text-davinci-003",
+            prompt=conversation,
+            temperature=0.5,
+            max_tokens=100,
+        )
 
         # Extract the text from the response
         generated_text = response["choices"][0]["text"]
