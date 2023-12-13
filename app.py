@@ -74,7 +74,7 @@ if check_password():
         )
 
         # Extract the text from the response
-        generated_text = response["choices"][0]["text"]
+        generated_text = response.choices[0].text
 
         # Extract the addresses from the user's input
         addresses = re.findall(r"\d{1,5} .+, .+, .+ \d{5}", conversation)
